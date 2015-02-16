@@ -35,12 +35,12 @@ Create a rate limiter which can send 60 requests every 30 seconds.
     var limiter = new RateLimiter({
           rate: 60              // requests per interval, 
                                 // defaults to 60
-        , interval: 30          // interval for the rate x 
+        , interval: 30          // interval for the rate, x 
                                 // requests per interval, 
                                 // defaults to 60
-        , backoffCode: 429      // backoff when this status is
+        , backoffCode: 429      // back off when this status is
                                 // returned, defaults to 429
-        , backoffTime: 10       // backoff for n seconds, 
+        , backoffTime: 10       // back off for n seconds, 
                                 // defauts to rate/5
         , maxWaitingTime: 300   // return errors for requests
                                 // that will have to wait for
@@ -48,6 +48,8 @@ Create a rate limiter which can send 60 requests every 30 seconds.
                                 // to 5 minutes
     });
 
+
+If requests are rejected because they cannot be executed in time, they will return out of order. This means if you enqueue 100 requests and only 70 can be sent in time, the 30 requests that cannot be executed will return with an error immediately, long before the other requests that are still enqueued.
 
 
 ### Execute requests
