@@ -22,6 +22,8 @@
         , "ee-log"                  : "0.3.x"
         , "leaky-bucket"            : "0.x.x"
         , "request"                 : "2.53.x"
+        , "es6-promise"             : "2.0.x"
+        , "async-method"            : "0.x.x"
     }
     , "devDependencies": {
           "mocha"                   : "1.17.x"
