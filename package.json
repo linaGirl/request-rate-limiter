@@ -1,7 +1,7 @@
 {
       "name"                        : "request-rate-limiter"
     , "description"                 : "Call HTTP APIs that have rate limits and allow request bursts"
-    , "version"                     : "0.1.0"
+    , "version"                     : "0.2.0"
     , "homepage"                    : "https://github.com/eventEmitter/request-rate-limiter"
     , "author"                      : "Michael van der Weg <michael@joinbox.com> (http://joinbox.com/)" 
     , "licence"                     : "mit"
@@ -24,9 +24,11 @@
         , "request"                 : "2.53.x"
         , "es6-promise"             : "2.0.x"
         , "async-method"            : "0.x.x"
+        , "ee-argv"                 : "0.1.x"
     }
     , "devDependencies": {
           "mocha"                   : "1.17.x"
+        , "ee-webservice"           : "0.3.x"
     }
     , "optionalDependencies": {}
     , "keywords"                    : ["http", "rate-limit", "request", "leaky-bucket"]
