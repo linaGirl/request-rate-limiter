@@ -54,7 +54,7 @@ If requests are rejected because they cannot be executed in time, they will retu
 
 ### Execute requests
 
-This module relies on the [request module by mikael](https://www.npmjs.com/package/request). The configuration passed to the «request» method gets passed directly to that module. The response body, if present, is not returned as separate variable, it is instead available as the «data» property of the response object.
+This module relies on the [request module by mikael](https://www.npmjs.com/package/request). The configuration passed to the «request» method gets passed directly to that module. The response body, if present, is not returned as separate variable, it is instead available as the «body» property of the response object.
 
 
 Execute a request using callbacks
