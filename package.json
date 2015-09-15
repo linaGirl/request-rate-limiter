@@ -1,7 +1,7 @@
 {
       "name"                        : "request-rate-limiter"
     , "description"                 : "Call HTTP APIs that have rate limits and allow request bursts"
-    , "version"                     : "0.3.0"
+    , "version"                     : "0.3.1"
     , "homepage"                    : "https://github.com/eventEmitter/request-rate-limiter"
     , "author"                      : "Michael van der Weg <michael@joinbox.com> (http://joinbox.com/)" 
     , "license"                     : "MIT"

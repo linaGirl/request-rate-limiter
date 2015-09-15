@@ -104,7 +104,7 @@ Execute a request using callbacks
                 if (err) {
                     // oh crap
                 }
-                else if (reponse.statusCode === 427) {
+                else if (reponse.statusCode === 429) {
 
                     // we have to back off. this callback will be called again as soon as the remote enpoint
                     // should accept requests again. no need to queue your callback another time on the limiter.
@@ -127,7 +127,7 @@ Execute a request using Promises
         // its time to execute your request
         request({url: 'http://joinbox.com/...'}, function(err, response, body) {
             if (err) callback(err);
-            else if (reponse.statusCode === 427) {
+            else if (reponse.statusCode === 429) {
 
                 // we have to back off. this callback will be called again as soon as the remote enpoint
                 // should accept requests again. no need to queue your callback another time on the limiter.
