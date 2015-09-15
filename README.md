@@ -13,7 +13,7 @@ This module uses [sematic versioning](http://semver.org/)
 [![Build Status](https://travis-ci.org/eventEmitter/request-rate-limiter.png?branch=master)](https://travis-ci.org/eventEmitter/request-rate-limiter)
 
 
-## usage
+## API
 
 The constructor accepts one argument. The argument can be a number (the rate limit) or an config object. 
 
@@ -54,7 +54,11 @@ If requests are rejected because they cannot be executed in time, they will retu
 
 ### Execute requests
 
-This module relies on the [request module by mikael](https://www.npmjs.com/package/request). The configuration passed to the «request» method gets passed directly to that module. The response body, if present, is not returned as separate variable, it is instead available as the «body» property of the response object.
+You may either use the built in [request module by mikael](https://www.npmjs.com/package/request) or use your own request implementation.
+
+#### API Using the request module
+
+The configuration passed to the «request» method gets passed directly to the [request module by mikael](https://www.npmjs.com/package/request). The response body, if present, is not returned as separate variable, it is instead available as the «body» property of the response object.
 
 
 Execute a request using callbacks
@@ -77,4 +81,61 @@ Execute a request using Promises
 
     }).catch(function(err) {
 
+    });
+
+
+
+#### API Using your own request implementation
+
+
+You only have to pass a callback to the request method, it gets executed as soon as the request can be sent. Your callback gets two parameters passed to it, the first is the error object, the second is a function that can be called when the rate limiter should back off for a certain time. if the backoff function is called the same callback is called again later when the remote api accepts requests again.
+
+
+Execute a request using callbacks
+
+    // queue request
+    limiter.request(function(err, backoff) {
+        if (err) {
+            // the err object is set if the limiter is overflowing or is not able to execute your request in time
+        else {
+
+            // its time to execute your request
+            request({url: 'http://joinbox.com/...'}, function(err, response, body) {
+                if (err) {
+                    // oh crap
+                }
+                else if (reponse.statusCode === 427) {
+
+                    // we have to back off. this callback will be called again as soon as the remote enpoint
+                    // should accept requests again. no need to queue your callback another time on the limiter.
+                    backoff();
+                }
+                else {
+                    // nice, your request looks good
+                }
+            });
+        }
+    });
+   
+
+
+Execute a request using Promises
+
+    // queue request
+    limiter.request().then(function(backoff) {
+
+        // its time to execute your request
+        request({url: 'http://joinbox.com/...'}, function(err, response, body) {
+            if (err) callback(err);
+            else if (reponse.statusCode === 427) {
+
+                // we have to back off. this callback will be called again as soon as the remote enpoint
+                // should accept requests again. no need to queue your callback another time on the limiter.
+                backoff();
+            }
+            else callback(body);
+        });        
+    }).catch(function(err) {
+
+         // the err object is set if the limiter is overflowing or is not able to execute your request in time
     });
