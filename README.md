@@ -15,7 +15,7 @@ This module uses [sematic versioning](http://semver.org/)
 
 ## API
 
-The constructor accepts one argument. The argument can be a number (the rate limit) or an config object. 
+The constructor accepts one argument. The argument can be a number (the rate limit) or an config object.
 
 
     var RateLimiter = require('request-rate-limiter');
@@ -33,14 +33,14 @@ Create a rate limiter which can send 60 requests every 30 seconds.
 
 
     var limiter = new RateLimiter({
-          rate: 60              // requests per interval, 
+          rate: 60              // requests per interval,
                                 // defaults to 60
-        , interval: 30          // interval for the rate, x 
-                                // requests per interval, 
+        , interval: 30          // interval for the rate, x
+                                // requests per interval,
                                 // defaults to 60
         , backoffCode: 429      // back off when this status is
                                 // returned, defaults to 429
-        , backoffTime: 10       // back off for n seconds, 
+        , backoffTime: 10       // back off for n seconds,
                                 // defauts to rate/5
         , maxWaitingTime: 300   // return errors for requests
                                 // that will have to wait for
@@ -116,7 +116,7 @@ Execute a request using callbacks
             });
         }
     });
-   
+
 
 
 Execute a request using Promises
@@ -134,7 +134,7 @@ Execute a request using Promises
                 backoff();
             }
             else callback(body);
-        });        
+        });
     }).catch(function(err) {
 
          // the err object is set if the limiter is overflowing or is not able to execute your request in time
