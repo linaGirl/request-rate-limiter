@@ -88,7 +88,7 @@ Execute a request using Promises
 #### API Using your own request implementation
 
 
-You only have to pass a callback to the request method, it gets executed as soon as the request can be sent. Your callback gets two parameters passed to it, the first is the error object, the second is a function that can be called when the rate limiter should back off for a certain time. if the backoff function is called the same callback is called again later when the remote api accepts requests again.
+You only have to pass a callback to the request method, it gets executed as soon as the request should be sent. Your callback gets two parameters passed to it, the first is the error object, the second is a function that can be called when the rate limiter should back off for a certain amount of time. If the backoff function is called the same callback is called again later when the remote api accepts requests again.
 
 
 Execute a request using callbacks
