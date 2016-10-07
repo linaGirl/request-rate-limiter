@@ -18,7 +18,7 @@
     , "dependencies": {
           "ee-class"                : "1.x"
         , "ee-types"                : "2.x"
-        , "leaky-bucket"            : "0.x"
+        , "leaky-bucket"            : "2.x"
         , "ee-event-emitter"        : "0.3.x"
         , "ee-log"                  : "0.3.x"
         , "request"                 : "2.53.x"
@@ -26,7 +26,7 @@
         , "ee-argv"                 : "0.1.x"
     }
     , "devDependencies": {
-          "mocha"                   : "1.17.x"
+          "mocha"                   : "2.x"
         , "ee-webservice"           : "0.3.x"
     }
     , "optionalDependencies": {}
