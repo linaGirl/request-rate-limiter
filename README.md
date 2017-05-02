@@ -1,5 +1,7 @@
 # request-rate-limiter
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/eventEmitter/request-rate-limiter.svg)](https://greenkeeper.io/)
+
 Call HTTP APIs that have rate limits and allow request bursts. This module depends on a leaky-bucket for doing the rate limit. Backs off when a HTTP 429 «Too Many Requests» is encountered.
 
 This module uses [sematic versioning](http://semver.org/)
