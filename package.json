@@ -19,15 +19,15 @@
           "ee-class"                : "1.x"
         , "ee-types"                : "2.x"
         , "leaky-bucket"            : "2.x"
-        , "ee-event-emitter"        : "0.3.x"
-        , "ee-log"                  : "0.3.x"
-        , "request"                 : "2.53.x"
+        , "ee-event-emitter"        : "~1.0.1"
+        , "ee-log"                  : "~2.0.2"
+        , "request"                 : "~2.81.0"
         , "async-method"            : "0.x.x"
-        , "ee-argv"                 : "0.1.x"
+        , "ee-argv"                 : "~1.0.2"
     }
     , "devDependencies": {
-          "mocha"                   : "2.x"
-        , "ee-webservice"           : "0.3.x"
+          "mocha"                   : "^3.3.0"
+        , "ee-webservice"           : "~1.0.0"
     }
     , "optionalDependencies": {}
     , "keywords"                    : ["http", "rate-limit", "request", "leaky-bucket"]
