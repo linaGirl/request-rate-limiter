@@ -1,37 +1,41 @@
 {
-      "name"                        : "request-rate-limiter"
-    , "description"                 : "Call HTTP APIs that have rate limits and allow request bursts"
-    , "version"                     : "1.0.1"
-    , "homepage"                    : "https://github.com/eventEmitter/request-rate-limiter"
-    , "author"                      : "Michael van der Weg <michael@joinbox.com> (http://joinbox.com/)"
-    , "license"                     : "MIT"
-    , "repository": {
-          "url"                     : "https://github.com/eventEmitter/request-rate-limiter.git"
-        , "type"                    : "git"
-    }
-    , "engines": {
-        "node"                      : ">=v4"
-    }
-    , "bugs": {
-        "url"                       : "https://github.com/eventEmitter/request-rate-limiter/issues"
-    }
-    , "dependencies": {
-          "ee-class"                : "1.x"
-        , "ee-types"                : "2.x"
-        , "leaky-bucket"            : "2.x"
-        , "ee-event-emitter"        : "0.3.x"
-        , "ee-log"                  : "0.3.x"
-        , "request"                 : "2.53.x"
-        , "async-method"            : "0.x.x"
-        , "ee-argv"                 : "0.1.x"
-    }
-    , "devDependencies": {
-          "mocha"                   : "2.x"
-        , "ee-webservice"           : "0.3.x"
-    }
-    , "optionalDependencies": {}
-    , "keywords"                    : ["http", "rate-limit", "request", "leaky-bucket"]
-    , "scripts": {
-        "test"                      : "./node_modules/mocha/bin/mocha --reporter spec"
+    "name": "request-rate-limiter",
+    "description": "Call HTTP APIs that have rate limits and allow request bursts",
+    "version": "1.0.2",
+    "homepage": "https://github.com/eventEmitter/request-rate-limiter",
+    "author": "Michael van der Weg <michael@joinbox.com> (http://joinbox.com/)",
+    "license": "MIT",
+    "repository": {
+        "url": "https://github.com/eventEmitter/request-rate-limiter.git",
+        "type": "git"
+    },
+    "engines": {
+        "node": ">=v4"
+    },
+    "bugs": {
+        "url": "https://github.com/eventEmitter/request-rate-limiter/issues"
+    },
+    "dependencies": {
+        "ee-class": "1.x",
+        "ee-types": "2.x",
+        "leaky-bucket": "2.x",
+        "ee-log": "1.x",
+        "request": "2.53.x",
+        "async-method": "0.x.x",
+        "ee-argv": "0.1.x"
+    },
+    "devDependencies": {
+        "mocha": "3.x",
+        "ee-webservice": "0.3.x"
+    },
+    "optionalDependencies": {},
+    "keywords": [
+        "http",
+        "rate-limit",
+        "request",
+        "leaky-bucket"
+    ],
+    "scripts": {
+        "test": "./node_modules/mocha/bin/mocha --reporter spec"
     }
 }
