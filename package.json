@@ -1,32 +1,28 @@
 {
     "name": "request-rate-limiter",
     "description": "Call HTTP APIs that have rate limits and allow request bursts",
-    "version": "1.0.2",
+    "version": "2.0.0",
     "homepage": "https://github.com/eventEmitter/request-rate-limiter",
-    "author": "Michael van der Weg <michael@joinbox.com> (http://joinbox.com/)",
+    "author": "Lina van der Weg <lina@joinbox.com> (http://joinbox.com/)",
     "license": "MIT",
     "repository": {
         "url": "https://github.com/eventEmitter/request-rate-limiter.git",
         "type": "git"
     },
     "engines": {
-        "node": ">=v4"
+        "node": ">=v10"
     },
     "bugs": {
         "url": "https://github.com/eventEmitter/request-rate-limiter/issues"
     },
     "dependencies": {
-        "ee-class": "1.x",
-        "ee-types": "2.x",
-        "leaky-bucket": "2.x",
-        "ee-log": "1.x",
-        "request": "2.53.x",
-        "async-method": "0.x.x",
-        "ee-argv": "0.1.x"
+        "leaky-bucket": "^3.0.4",
+        "logd": "^2.3.0",
+        "logd-console-transport": "^1.1.0",
+        "request": "^2.88.0"
     },
     "devDependencies": {
-        "mocha": "3.x",
-        "ee-webservice": "0.3.x"
+        "section-tests": "^2.2.4"
     },
     "optionalDependencies": {},
     "keywords": [
@@ -36,6 +32,7 @@
         "leaky-bucket"
     ],
     "scripts": {
-        "test": "./node_modules/mocha/bin/mocha --reporter spec"
-    }
+        "test": "node --experimental-modules --no-warnings ./node_modules/.bin/section ./test/*.mjs --ld"
+    },
+    "main": "./index.mjs"
 }

@@ -1,141 +1,139 @@
+
 # request-rate-limiter
 
-Call HTTP APIs that have rate limits and allow request bursts. This module depends on a leaky-bucket for doing the rate limit. Backs off when a HTTP 429 «Too Many Requests» is encountered.
+A simple leaky-bucket based request rate limiter. Mostly used for clients that work against an API that makes use of a leaky bucket for rate limiting incoming requests. Backs off when an API returns the HTTP 429 HTTP «Too Many Requests» status is encountered.
 
-This module uses [sematic versioning](http://semver.org/)
+Provides a request module based on the [request module by mikael](https://www.npmjs.com/package/request). You may also implement your own request handler module in a very simple way.
 
-## installation
+ATTENTION: The API of Version 2+ is not backwards compatible with the API of version 1!
 
-    npm i request-rate-limiter
+ATTENTION: This module makes use of es modules and thus needs to be started using the --experimental-modules flag in node 10 and 12.
 
-## build status
+
 
 [![Build Status](https://travis-ci.org/eventEmitter/request-rate-limiter.png?branch=master)](https://travis-ci.org/eventEmitter/request-rate-limiter)
 
-
 ## API
 
-The constructor accepts one argument. The argument can be a number (the rate limit) or an config object.
+### constructor
+
+The constructor accepts 4 optional options, which can be used to configure the behaviour of the limiter:
+- backoffTime: how many seconds to back off when the remote end indicates to back off
+- requestRate: how many requests can be sent within the interval
+- interval: the interval within the all requests of the requestRate should be exeuted
+- timeout: no request will stay in the queue any longer than the timeout. if the queue is full, the requst will be rejected
+
+```javascript
+
+import RequestRateLimiter from 'request-rate-limiter';
+
+const limiter = new RequestRateLimiter({
+    backoffTime: 10,
+    requestRate: 60,
+    interval: 60,
+    timeout: 600,
+});
+
+```
+
+### setRequestHandler
+
+Used to pass a request handler to the limiter
 
 
-    var RateLimiter = require('request-rate-limiter');
+Make use of the request handler provided by this module
+```javascript
+import RequestRateLimiter, { RequestsRequestHandler } from 'request-rate-limiter';
 
+const limiter = new RequestRateLimiter();
 
-Create a rate limiter which can send 120 requests per minute.
+limiter.setRequestHandler(new RequestsRequestHandler({
+    backoffHTTPCode: 429,
+}));
+```
 
-    var limiter = new RateLimiter(120);
+Implement your own request implementation
+```javascript
+import RequestRateLimiter, { BackoffError } from 'request-rate-limiter';
 
-Create a rate limiter which can send 60 requests per minute.
-
-    var limiter = new RateLimiter();
-
-Create a rate limiter which can send 60 requests every 30 seconds.
-
-
-    var limiter = new RateLimiter({
-          rate: 60              // requests per interval,
-                                // defaults to 60
-        , interval: 30          // interval for the rate, x
-                                // requests per interval,
-                                // defaults to 60
-        , backoffCode: 429      // back off when this status is
-                                // returned, defaults to 429
-        , backoffTime: 10       // back off for n seconds,
-                                // defauts to rate/5
-        , maxWaitingTime: 300   // return errors for requests
-                                // that will have to wait for
-                                // n seconds or more. defaults
-                                // to 5 minutes
-    });
-
-
-If requests are rejected because they cannot be executed in time, they will return out of order. This means if you enqueue 100 requests and only 70 can be sent in time, the 30 requests that cannot be executed will return with an error immediately, long before the other requests that are still enqueued.
-
-
-### Execute requests
-
-You may either use the built in [request module by mikael](https://www.npmjs.com/package/request) or use your own request implementation.
-
-#### API Using the request module
-
-The configuration passed to the «request» method gets passed directly to the [request module by mikael](https://www.npmjs.com/package/request). The response body, if present, is not returned as separate variable, it is instead available as the «body» property of the response object.
-
-
-Execute a request using callbacks
-
-    limiter.request({
-          url       : 'awesome.api/resource'
-        , method    : 'get'
-    }, function(err, response) {
-
-    });
-
-
-Execute a request using Promises
-
-
-    limiter.request({
-          url       : 'awesome.api/resource'
-        , method    : 'get'
-    }).then(function(response) {
-
-    }).catch(function(err) {
-
-    });
+const limiter = new RequestRateLimiter();
 
 
 
-#### API Using your own request implementation
+class MyRequestHandler {
+
+    // this method is th eonly required interface to implement
+    // it gets passed the request onfig that is passed by the 
+    // user to the request method of the limiter. The mehtod msut
+    // return an instance of the BackoffError when the limiter 
+    // needs to back off
+    async request(requestConfig) {
+        const response = sendRequestUsingSomeLibrary(requestConfig);
+
+        if (response.statusCode === 429) throw new BackoffError(`Need to nack off guys!`);
+        else return response;
+    }
+}
+
+limiter.setRequestHandler(new MyRequestHandler());
+```
 
 
-You only have to pass a callback to the request method, it gets executed as soon as the request should be sent. Your callback gets two parameters passed to it, the first is the error object, the second is a function that can be called when the rate limiter should back off for a certain amount of time. If the backoff function is called the same callback is called again later when the remote api accepts requests again.
+### request
+
+The request method is used to send rate limited requests. You need to pass the configuration of the request
+to it, which later will be passed to the request handler (see above).
+
+```javascript
+import RequestRateLimiter, { RequestsRequestHandler } from 'request-rate-limiter';
+
+const limiter = new RequestRateLimiter();
+limiter.setRequestHandler(new RequestsRequestHandler());
 
 
-Execute a request using callbacks
+// just send one request
+const response = await limiter.request('https://joinbox.com/');
 
-    // queue request
-    limiter.request(function(err, backoff) {
-        if (err) {
-            // the err object is set if the limiter is overflowing or is not able to execute your request in time
-        else {
 
-            // its time to execute your request
-            request({url: 'http://joinbox.com/...'}, function(err, response, body) {
-                if (err) {
-                    // oh crap
-                }
-                else if (response.statusCode === 429) {
+// send requests one after another, waiting for each one to finish 
+// before the next one is sent
+for (const requestConfig of requests) {
+    const response = await limiter.request(requestConfig);
+}
 
-                    // we have to back off. this callback will be called again as soon as the remote enpoint
-                    // should accept requests again. no need to queue your callback another time on the limiter.
-                    backoff();
-                }
-                else {
-                    // nice, your request looks good
-                }
-            });
-        }
-    });
+// send a buch of requests in parallel
+await Promise.all(requests.map(async(requestConfig) => {
+    const response = await limiter.request(requestConfig);
+}));
+
+```
 
 
 
-Execute a request using Promises
 
-    // queue request
-    limiter.request().then(function(backoff) {
 
-        // its time to execute your request
-        request({url: 'http://joinbox.com/...'}, function(err, response, body) {
-            if (err) callback(err);
-            else if (response.statusCode === 429) {
+### idle
 
-                // we have to back off. this callback will be called again as soon as the remote enpoint
-                // should accept requests again. no need to queue your callback another time on the limiter.
-                backoff();
-            }
-            else callback(body);
-        });
-    }).catch(function(err) {
+The idle method returns a promise which is called when the limiter becomes idle. It's like
+a once event listener which means that one the promise is resolved on must call the idle method
+again to wait on the next bucnh of requests to complete and the limiter to become idle
 
-         // the err object is set if the limiter is overflowing or is not able to execute your request in time
-    });
+```javascript
+import RequestRateLimiter, { RequestsRequestHandler } from 'request-rate-limiter';
+
+const limiter = new RequestRateLimiter();
+limiter.setRequestHandler(new RequestsRequestHandler());
+
+
+
+// send a buch of requests in parallel
+Promise.all(requests.map(async(requestConfig) => {
+    const response = await limiter.request(requestConfig);
+})).catch((err) => {
+    // this happens if the bucket is overflowing
+});
+
+// wait until th elimiter becomes idle
+await limiter.idle();
+
+```
