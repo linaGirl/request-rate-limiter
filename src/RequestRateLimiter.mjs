@@ -66,8 +66,9 @@ export default class RequestRateLimiter {
             await this.bucket.throttle();
 
 
-            await this.executeRequest(requestConfig).then(() => {
+            return await this.executeRequest(requestConfig).then((response) => {
                 log.debug(`Request was sucessfull`);
+                return response;
             }).catch(async (err) => {
                 if (err instanceof BackoffError) {
                     log.debug(`Backing off for ${this.backoffTime}`);

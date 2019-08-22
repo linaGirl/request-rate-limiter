@@ -11,6 +11,15 @@ section('Rate Limiter', (section) => {
     });
 
 
+    section.test('return request response', async() => {
+        const limiter = new RequestRateLimiter();
+        limiter.setRequestHandler(new MockRequestHandler());
+
+        const response = await limiter.request({});
+        assert.deepStrictEqual(response, { status: 'good' });
+    });
+
+
     section.test('enqueue one request', async() => {
         const limiter = new RequestRateLimiter();
         limiter.setRequestHandler(new MockRequestHandler());
