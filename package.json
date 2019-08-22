@@ -1,7 +1,7 @@
 {
     "name": "request-rate-limiter",
     "description": "Call HTTP APIs that have rate limits and allow request bursts",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "homepage": "https://github.com/eventEmitter/request-rate-limiter",
     "author": "Lina van der Weg <lina@joinbox.com> (http://joinbox.com/)",
     "license": "MIT",
