@@ -17,10 +17,10 @@ ATTENTION: This module makes use of es modules and thus needs to be started usin
 
 ### constructor
 
-The constructor accepts 4 optional options, which can be used to configure the behaviour of the limiter:
+The constructor accepts 4 additional options, which can be used to configure the behaviour of the limiter:
 - backoffTime: how many seconds to back off when the remote end indicates to back off
 - requestRate: how many requests can be sent within the interval
-- interval: the interval within the all requests of the requestRate should be exeuted
+- interval: the interval within which all requests of the requestRate should be executed
 - timeout: no request will stay in the queue any longer than the timeout. if the queue is full, the requst will be rejected
 
 ```javascript
@@ -115,8 +115,8 @@ await Promise.all(requests.map(async(requestConfig) => {
 ### idle
 
 The idle method returns a promise which is called when the limiter becomes idle. It's like
-a once event listener which means that one the promise is resolved on must call the idle method
-again to wait on the next bucnh of requests to complete and the limiter to become idle
+a once event listener which means that once the promise is resolved one must call the idle method
+again to wait on the next bunch of requests to complete and the limiter to become idle
 
 ```javascript
 import RequestRateLimiter, { RequestsRequestHandler } from 'request-rate-limiter';
