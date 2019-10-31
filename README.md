@@ -62,9 +62,9 @@ const limiter = new RequestRateLimiter();
 
 class MyRequestHandler {
 
-    // this method is th eonly required interface to implement
-    // it gets passed the request onfig that is passed by the 
-    // user to the request method of the limiter. The mehtod msut
+    // this method is the only required interface to implement
+    // it gets passed the request config that is passed by the 
+    // user to the request method of the limiter. The method must
     // return an instance of the BackoffError when the limiter 
     // needs to back off
     async request(requestConfig) {
